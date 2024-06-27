@@ -162,6 +162,7 @@ public class ESPProvisionManager {
                     String scannedData = barcode.rawValue;
 
                     try {
+                        scannedData = "{\"ver\":\"v1\",\"name\":\""+ scannedData + "\",\"pop\":\"12345678\",\"transport\":\"ble\"";
                         JSONObject jsonObject = new JSONObject(scannedData);
 
                         String deviceName = jsonObject.optString("name");
