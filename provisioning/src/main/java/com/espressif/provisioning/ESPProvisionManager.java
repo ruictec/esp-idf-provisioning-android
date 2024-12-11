@@ -354,8 +354,8 @@ public void processQRCodeData(final String scannedData, final QRCodeScanListener
         Log.d(TAG, "QR Code Data : " + scannedData);
 
         try {
-             scannedData = "{\"ver\":\"v1\",\"name\":\""+ scannedData + "\",\"pop\":\"12345678\",\"transport\":\"ble\"}";
-            JSONObject jsonObject = new JSONObject(scannedData);
+             String newScannedData = "{\"ver\":\"v1\",\"name\":\""+ scannedData + "\",\"pop\":\"12345678\",\"transport\":\"ble\"}";
+            JSONObject jsonObject = new JSONObject(newScannedData);
 
             // Extract the relevant fields from the JSON data
             String deviceName = jsonObject.optString("name");
