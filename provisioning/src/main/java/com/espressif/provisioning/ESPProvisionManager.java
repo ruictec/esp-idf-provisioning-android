@@ -162,7 +162,6 @@ public class ESPProvisionManager {
                     String scannedData = barcode.rawValue;
 
                     try {
-                         scannedData = "{\"ver\":\"v1\",\"name\":\""+ scannedData + "\",\"pop\":\"12345678\",\"transport\":\"ble\"}";
                         JSONObject jsonObject = new JSONObject(scannedData);
 
                         String deviceName = jsonObject.optString("name");
@@ -260,7 +259,6 @@ public class ESPProvisionManager {
                     Log.d(TAG, "QR Code Data : " + scannedData);
 
                     try {
-                        scannedData = "{\"ver\":\"v1\",\"name\":\""+ scannedData + "\",\"pop\":\"12345678\",\"transport\":\"ble\"";
                         JSONObject jsonObject = new JSONObject(scannedData);
 
                         String deviceName = jsonObject.optString("name");
@@ -338,105 +336,6 @@ public class ESPProvisionManager {
         });
     }
 
-/**
- * This method processes the QR code data provided as a string and checks whether the device is available or not.
- * If the device is available in scanning (BLE / Wi-Fi), it will return the ESPDevice.
- *
- * @param scannedData       The QR code data as a JSON string (e.g., {"ver":"v1","name":"YSM_744DBD63F34D","pop":"12345678","transport":"ble"}).
- * @param qrCodeScanListener QRCodeScanListener
- */
-@RequiresPermission(allOf = {Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.BLUETOOTH, Manifest.permission.ACCESS_FINE_LOCATION})
-public void processQRCodeData(final String scannedData, final QRCodeScanListener qrCodeScanListener) {
-
-    isScanned = false;
-
-    if (!TextUtils.isEmpty(scannedData) && !isScanned) {
-
-        Log.d(TAG, "QR Code Data : " + scannedData);
-
-        try {
-             String newScannedData = "{\"ver\":\"v1\",\"name\":\""+ scannedData + "\",\"pop\":\"12345678\",\"transport\":\"ble\"}";
-            JSONObject jsonObject = new JSONObject(newScannedData);
-
-            // Extract the relevant fields from the JSON data
-            String deviceName = jsonObject.optString("name");
-            String pop = jsonObject.optString("pop");
-            String transport = jsonObject.optString("transport");
-            int security = jsonObject.optInt("security", ESPConstants.SecurityType.SECURITY_2.ordinal());
-            String userName = jsonObject.optString("username");
-            String password = jsonObject.optString("password");
-            isScanned = true;
-
-            // Trigger QR code scanned event
-            if (qrCodeScanListener != null) {
-                qrCodeScanListener.qrCodeScanned();
-            }
-
-            // Create a handler to release resources in the main thread
-            Handler handler = new Handler(Looper.getMainLooper());
-            handler.post(new Runnable() {
-
-                @Override
-                public void run() {
-                    // Handle any resource release if necessary (not needed here since no camera is involved)
-                }
-            });
-
-            // Determine the transport type (SoftAP or BLE)
-            ESPConstants.TransportType transportType = null;
-            ESPConstants.SecurityType securityType = null;
-
-            if (!TextUtils.isEmpty(transport)) {
-
-                if (transport.equalsIgnoreCase("softap")) {
-
-                    transportType = ESPConstants.TransportType.TRANSPORT_SOFTAP;
-
-                } else if (transport.equalsIgnoreCase("ble")) {
-
-                    transportType = ESPConstants.TransportType.TRANSPORT_BLE;
-
-                } else {
-                    Log.e(TAG, "" + transport + " Transport type is not supported");
-                    qrCodeScanListener.onFailure(new RuntimeException("Transport type is not supported"));
-                    return;
-                }
-            } else {
-                Log.e(TAG, "Transport is not available in QR code data");
-                qrCodeScanListener.onFailure(new RuntimeException("QR code is not valid"), scannedData);
-                return;
-            }
-
-            // Set security type based on the provided value
-            securityType = setSecurityType(security);
-
-            // Create the ESPDevice instance
-            espDevice = new ESPDevice(context, transportType, securityType);
-            espDevice.setDeviceName(deviceName);
-            espDevice.setProofOfPossession(pop);
-            espDevice.setUserName(userName);
-
-            // If the transport type is SoftAP and running on Android Q or higher, create WiFi device
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && transportType.equals(ESPConstants.TransportType.TRANSPORT_SOFTAP)) {
-
-                WiFiAccessPoint wiFiDevice = new WiFiAccessPoint();
-                wiFiDevice.setWifiName(deviceName);
-                wiFiDevice.setPassword(password);
-                espDevice.setWifiDevice(wiFiDevice);
-                qrCodeScanListener.deviceDetected(espDevice);
-            } else {
-                isDeviceAvailable(espDevice, password, qrCodeScanListener);
-            }
-
-        } catch (JSONException e) {
-
-            e.printStackTrace();
-            qrCodeScanListener.onFailure(new RuntimeException("QR code is not valid"), scannedData);
-        }
-    } else {
-        qrCodeScanListener.onFailure(new RuntimeException("QR code is not valid"), scannedData);
-    }
-}
     /**
      * This method is used to scan BLE devices.
      *
