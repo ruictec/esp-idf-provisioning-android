@@ -437,6 +437,7 @@ public void processQRCodeData(final String scannedData, final QRCodeScanListener
         qrCodeScanListener.onFailure(new RuntimeException("QR code is not valid"), scannedData);
     }
 }
+
     /**
      * This method is used to scan BLE devices.
      *
