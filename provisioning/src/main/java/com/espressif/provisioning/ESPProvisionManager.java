@@ -162,7 +162,7 @@ public class ESPProvisionManager {
                     String scannedData = barcode.rawValue;
 
                     try {
-                        scannedData = "{\"ver\":\"v1\",\"name\":\""+ scannedData + "\",\"pop\":\"12345678\",\"transport\":\"ble\"}";
+                         scannedData = "{\"ver\":\"v1\",\"name\":\""+ scannedData + "\",\"pop\":\"12345678\",\"transport\":\"ble\"}";
                         JSONObject jsonObject = new JSONObject(scannedData);
 
                         String deviceName = jsonObject.optString("name");
@@ -260,7 +260,7 @@ public class ESPProvisionManager {
                     Log.d(TAG, "QR Code Data : " + scannedData);
 
                     try {
-                        scannedData = "{\"ver\":\"v1\",\"name\":\""+ scannedData + "\",\"pop\":\"12345678\",\"transport\":\"ble\"}";
+                        scannedData = "{\"ver\":\"v1\",\"name\":\""+ scannedData + "\",\"pop\":\"12345678\",\"transport\":\"ble\"";
                         JSONObject jsonObject = new JSONObject(scannedData);
 
                         String deviceName = jsonObject.optString("name");
@@ -337,6 +337,7 @@ public class ESPProvisionManager {
             }
         });
     }
+
 /**
  * This method processes the QR code data provided as a string and checks whether the device is available or not.
  * If the device is available in scanning (BLE / Wi-Fi), it will return the ESPDevice.
