@@ -166,7 +166,6 @@ public class ESPProvisionManager {
                         JSONObject jsonObject = new JSONObject(scannedData);
 
                         String deviceName = jsonObject.optString("name");
-                        String pop = jsonObject.optString("pop");
                         String transport = jsonObject.optString("transport");
                         int security = jsonObject.optInt("security", ESPConstants.SecurityType.SECURITY_2.ordinal());
                         String userName = jsonObject.optString("username");
@@ -211,7 +210,6 @@ public class ESPProvisionManager {
 
                         espDevice = new ESPDevice(context, transportType, securityType);
                         espDevice.setDeviceName(deviceName);
-                        espDevice.setProofOfPossession(pop);
                         espDevice.setUserName(userName);
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && transportType.equals(ESPConstants.TransportType.TRANSPORT_SOFTAP)) {
@@ -264,7 +262,6 @@ public class ESPProvisionManager {
                         JSONObject jsonObject = new JSONObject(scannedData);
 
                         String deviceName = jsonObject.optString("name");
-                        String pop = jsonObject.optString("pop");
                         String transport = jsonObject.optString("transport");
                         int security = jsonObject.optInt("security", ESPConstants.SecurityType.SECURITY_2.ordinal());
                         String userName = jsonObject.optString("username");
@@ -312,7 +309,6 @@ public class ESPProvisionManager {
 
                         espDevice = new ESPDevice(context, transportType, securityType);
                         espDevice.setDeviceName(deviceName);
-                        espDevice.setProofOfPossession(pop);
                         espDevice.setUserName(userName);
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && transportType.equals(ESPConstants.TransportType.TRANSPORT_SOFTAP)) {
