@@ -260,7 +260,7 @@ public class ESPProvisionManager {
                     Log.d(TAG, "QR Code Data : " + scannedData);
 
                     try {
-                        scannedData = "{\"ver\":\"v1\",\"name\":\""+ scannedData + "\",\"transport\":\"ble\"";
+                        scannedData = "{\"ver\":\"v1\",\"name\":\""+ scannedData + "\",\"transport\":\"ble\"}";
                         JSONObject jsonObject = new JSONObject(scannedData);
 
                         String deviceName = jsonObject.optString("name");
