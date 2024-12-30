@@ -167,7 +167,7 @@ public class ESPProvisionManager {
 
                         String deviceName = jsonObject.optString("name");
                         String transport = jsonObject.optString("transport");
-                        int security = jsonObject.optInt("security", ESPConstants.SecurityType.SECURITY_2.ordinal());
+                        int security = 0;
                         String userName = jsonObject.optString("username");
                         String password = jsonObject.optString("password");
                         isScanned = true;
@@ -263,7 +263,7 @@ public class ESPProvisionManager {
 
                         String deviceName = jsonObject.optString("name");
                         String transport = jsonObject.optString("transport");
-                        int security = jsonObject.optInt("security", ESPConstants.SecurityType.SECURITY_2.ordinal());
+                        int security = 0;
                         String userName = jsonObject.optString("username");
                         String password = jsonObject.optString("password");
                         isScanned = true;
